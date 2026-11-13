@@ -16,6 +16,8 @@ jobs:
         with:
           distribution: temurin
           java-version: 17
+      - name: Configurar Android SDK
+        uses: android-actions/setup-android@v3
       - uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: 8.9
@@ -24,6 +26,7 @@ jobs:
           DIR=$(dirname "$(find proj -name 'settings.gradle*' | head -1)")
           echo "Projeto em: $DIR"
           cd "$DIR"
+          echo "sdk.dir=$ANDROID_HOME" > local.properties
           gradle assembleDebug --no-daemon
           cp app/build/outputs/apk/debug/app-debug.apk "$GITHUB_WORKSPACE/kj-games.apk"
       - uses: softprops/action-gh-release@v2
